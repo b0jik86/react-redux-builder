@@ -1,12 +1,12 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { initOpenClose } from './jquery.open-close';
+import EE from './event-emiter';
 
-export default class Item extends Component {
-	render() {
-		return (
-			<li
-				style={this.props.data.isReady ? {
+export const Item = props => (
+	<li
+		style={props.data.isReady ? {
 					textDecoration: 'line-through',
 					listStyle: 'none',
 					opacity: .25
@@ -14,12 +14,12 @@ export default class Item extends Component {
 					textDecoration: 'none',
 					listStyle: 'circle'
 				}}
+	>
+		<span onClick={() => EE.trigger('onToggle', props.index)}>{props.data.text}</span>
+		<button onClick={() => EE.trigger('onRemove', props.index)}>XXX</button>
+	</li>
+);
 
-			>
-				<span onClick={() => this.props.toggleHandler()}>{this.props.data.text}</span>
-				<button onClick={() => this.props.removeHandler()}>XXX</button>
-			</li>
-		)
-	}
-}
-
+// Root.on
+// Item.trigger
+// Item.trigger() -> ...... -> Root.on() -> setState() -> List -> Item

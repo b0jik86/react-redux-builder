@@ -1,20 +1,25 @@
 'use strict';
 
 import React, { Component } from 'react';
-
-import List from './list';
+import {List} from './list';
+import EE from './event-emiter';
 
 export default class Root extends Component {
 	state = {
 		items: [{
-			text: 'Lorem Ipsum',
+			text: 'Lorem Ipsum1111',
 			isReady: false
 		}, {
-			text: 'Lorem Ipsum',
-			isReady: true
+			text: 'Lorem Ipsum2222',
+			isReady: false
 		}],
-		filterValue: 'ALL'
+		filterValue: 'NOTC'
 	};
+
+	componentWillMount() {
+		EE.on('onToggle', index => this.toggleItem(index));
+		EE.on('onRemove', index => this.removeItem(index));
+	}
 
 	toggleItem(i) {
 		this.setState({
@@ -69,8 +74,6 @@ export default class Root extends Component {
 				<List
 					items={this.state.items}
 					filterValue={this.state.filterValue}
-					toggleItem={(i) => this.toggleItem(i)}
-					removeItem={(i) => this.removeItem(i)}
 				/>
 				<hr />
 				<h1>{this.state.items.filter(item => !item.isReady).length}</h1>

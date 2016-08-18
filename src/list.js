@@ -2,32 +2,27 @@
 
 import React, { Component } from 'react';
 
-import Item from './item';
+import {Item} from './item';
 
-export default class List extends Component {
-	render() {
-		return (
-			<ul>
-				{this.props.items.filter(item => {
-					switch (this.props.filterValue) {
-						case 'COMPLETED':
-							return item.isReady;
+export const List = props => (
+	<ul>
+		{props.items.filter(item => {
+			switch (props.filterValue) {
+				case 'COMPLETED':
+					return item.isReady;
 
-						case 'NOTC':
-							return !item.isReady;
+				case 'NOTC':
+					return !item.isReady;
 
-						default:
-							return true;
-					}
-				}).map((item, i) => (
-					<Item
-						key={i}
-						data={item}
-						toggleHandler={() => this.props.toggleItem(i)}
-						removeHandler={() => this.props.removeItem(i)}
-					/>
-				))}
-			</ul>
-		)
-	}
-}
+				default:
+					return true;
+			}
+		}).map((item, i) => (
+			<Item
+				key={i}
+				index={i}
+				data={item}
+			/>
+		))}
+	</ul>
+);
