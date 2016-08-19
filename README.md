@@ -106,5 +106,5 @@ const MyComponent = ({ some, children }) => (
 		* connect store and Root component
 * home task
 	* create tabs with react-redux
-	* make active tab stored into locaStorage, to state active after page reload
+	* make active tab stored into locaStorage, to stay active after page reload
 
