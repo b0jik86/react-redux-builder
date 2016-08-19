@@ -4,6 +4,14 @@ import React, { Component } from 'react';
 import {List} from './list';
 import EE from './event-emiter';
 
+const SeparatorComp = () => (
+	<div>
+		<hr />
+		<hr />
+		<hr />
+	</div>
+);
+
 export default class Root extends Component {
 	state = {
 		items: [{
@@ -64,20 +72,28 @@ export default class Root extends Component {
 	}
 
 	render() {
+
 		return (
 			<div style={{paddingTop: 50}}>
+
+				{SeparatorComp()}
+
 				<input type="text" ref={input => this.input = input} />
 				<button
 					onClick={() => this.addItem(this.input.value)}
 				>+</button>
-				<hr />
+				<SeparatorComp />
 				<List
 					items={this.state.items}
 					filterValue={this.state.filterValue}
 				/>
-				<hr />
+				<SeparatorComp />
 				<h1>{this.state.items.filter(item => !item.isReady).length}</h1>
-				<hr />
+				<SeparatorComp />
+
+				<Link icon="home">home</Link>
+				<Link icon="avasv">contacts</Link>
+
 				<ul>
 					<li onClick={() => this.filterItem('ALL')}>ALL</li>
 					<li onClick={() => this.filterItem('COMPLETED')}>COMPLETED</li>
@@ -88,3 +104,12 @@ export default class Root extends Component {
 	}
 }
 
+const Link = ({ icon, children }) => {
+	return (
+		<li>
+			<a href="#">
+				<span className={`font-${icon}`}>{children}</span>
+			</a>
+		</li>
+	)
+};
