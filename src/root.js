@@ -1,115 +1,100 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {List} from './list';
-import EE from './event-emiter';
+import { createStore, combineReducers, compose } from 'redux';
+import { connect } from 'react-redux';
 
-const SeparatorComp = () => (
-	<div>
-		<hr />
-		<hr />
-		<hr />
-	</div>
-);
+import Filters from './filters';
+import List from './list';
 
-export default class Root extends Component {
-	state = {
-		items: [{
-			text: 'Lorem Ipsum1111',
-			isReady: false
-		}, {
-			text: 'Lorem Ipsum2222',
-			isReady: false
-		}],
-		filterValue: 'NOTC'
-	};
-
-	componentWillMount() {
-		EE.on('onToggle', index => this.toggleItem(index));
-		EE.on('onRemove', index => this.removeItem(index));
-	}
-
-	toggleItem(i) {
-		this.setState({
-			items: this.state.items.map((self, j) => {
-				if (j === i) {
-					self.isReady = !self.isReady;
-
+const items = (state = [], action) => {
+	switch(action.type) {
+		case 'ITEM_ADD':
+			return [
+				...state,
+				{
+					id: action.id,
+					text: action.text,
+					completed: false
 				}
+			];
 
-				return self;
-			})
-		})
-	}
-
-	addItem(text) {
-		if (text) {
-			this.setState({
-				items: [
-					...this.state.items,
-					{
-						isReady: false,
-						text
-					}
-				]
+		case 'ITEM_REMOVE':
+			return state.filter(item => {
+				return item.id !== action.id;
 			});
 
-			this.input.value = '';
-			this.input.focus();
-		}
-	}
+		case 'ITEM_TOGGLE':
+			return state.map(item => {
+				return {
+					...item,
+					...(item.id === action.id ? {
+						completed: !item.completed
+					} : {})
+				};
+			});
 
-	removeItem(i) {
-		this.setState({
-			items: this.state.items.filter((item, j) => i !== j)
-		});
+		default:
+			return state;
 	}
+};
+const filter = (state = 'all', action) => {
+	switch(action.type) {
+		case 'FILTER_CHANGE':
+			return action.filter;
 
-	filterItem(str) {
-		this.setState({
-			filterValue: str
-		});
+		default:
+			return state;
 	}
+};
 
+export const store = createStore(
+	combineReducers({
+		items,
+		filter
+	}),
+	compose(
+		window.devToolsExtension ? window.devToolsExtension() : f => f
+	)
+);
+
+const stateToProps = ({ items }) => ({
+	items
+});
+
+const dispatchToProps = (dispatch) => {
+	return {
+		itemAdd: (id, text) => dispatch({
+			type: 'ITEM_ADD',
+			id,
+			text
+		})
+	}
+};
+
+class Root extends Component {
 	render() {
+		const { items, itemAdd } = this.props;
 
 		return (
-			<div style={{paddingTop: 50}}>
-
-				{SeparatorComp()}
-
-				<input type="text" ref={input => this.input = input} />
-				<button
-					onClick={() => this.addItem(this.input.value)}
-				>+</button>
-				<SeparatorComp />
-				<List
-					items={this.state.items}
-					filterValue={this.state.filterValue}
-				/>
-				<SeparatorComp />
-				<h1>{this.state.items.filter(item => !item.isReady).length}</h1>
-				<SeparatorComp />
-
-				<Link icon="home">home</Link>
-				<Link icon="avasv">contacts</Link>
-
-				<ul>
-					<li onClick={() => this.filterItem('ALL')}>ALL</li>
-					<li onClick={() => this.filterItem('COMPLETED')}>COMPLETED</li>
-					<li onClick={() => this.filterItem('NOTC')}>NOTC</li>
-				</ul>
+			<div>
+				<input type="text" ref={n => this.input = n} />
+				<button onClick={() => {
+					if (this.input.value) {
+						itemAdd(Date.now() + 'id', this.input.value);
+						this.input.value = '';
+						this.input.focus();
+					}
+				}}>+</button>
+				<hr />
+				<List />
+				<hr />
+				<Filters />
+				<hr />
+				<h1>{items.length}</h1>
 			</div>
 		)
 	}
 }
 
-const Link = ({ icon, children }) => {
-	return (
-		<li>
-			<a href="#">
-				<span className={`font-${icon}`}>{children}</span>
-			</a>
-		</li>
-	)
-};
+export default connect(stateToProps, dispatchToProps)(Root);

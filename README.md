@@ -63,3 +63,48 @@
 	* fix bug. To reproduce:
 		* make first todo completed
 		* try to switch visible todo -> bug
+		
+		
+# 3 (19.08)
+* [video](https://www.youtube.com/watch?v=sBl_EUjvICg)
+* [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
+* [Redux DevTool](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
+* [redux docs](https://github.com/reactjs/redux)
+* [react-redux docs](https://github.com/reactjs/react-redux)
+* [react-router](https://github.com/reactjs/react-router)
+* children props
+
+```js
+const MyComponent = ({ some, children }) => (
+	<div className={some}>
+		{children}
+	<div>
+)
+
+<MyComponent
+	some="wat?"
+>123</MyComponent>
+```
+* redux
+	* **reducer**
+		* describe how state should change
+		* `(state = defaultState, action)`
+		* **SHOULD NOT** mutate state
+		* must return state anyway
+		* combineReducers
+	* **store**
+		* contains state data
+		* store.subscribe
+		* `store.getState()` return full state object
+	* **store.dispatch**
+		* get action object as argument
+	
+* react-redux
+	* connect - inject state and dispatch into component props
+	* stateToProps, dispatchToProps
+	* Provider
+		* connect store and Root component
+* home task
+	* create tabs with react-redux
+	* make active tab stored into locaStorage, to state active after page reload
+
