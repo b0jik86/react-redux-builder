@@ -25,9 +25,9 @@ module.exports = {
 	//	new webpack.ProvidePlugin({ React: 'react' })
 	//],
 
-	//resolve: {
-	//	alias: {
-	//		'actions': path.resolve(__dirname, './src/actions')
-	//	}
-	//}
+	resolve: {
+		alias: {
+			'actions': path.resolve(__dirname, './src/actions/actions')
+		}
+	}
 };

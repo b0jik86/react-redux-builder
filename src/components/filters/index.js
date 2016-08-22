@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { filterChange } from 'actions';
+
 const stateToProps = ({ filter }) => {
 	return {
 		filter
@@ -12,10 +14,7 @@ const stateToProps = ({ filter }) => {
 const dispatchToProps = (dispatch) => {
 	return {
 		filterChange(filter) {
-			dispatch({
-				type: 'FILTER_CHANGE',
-				filter
-			})
+			dispatch(filterChange(filter))
 		}
 	};
 };

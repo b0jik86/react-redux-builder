@@ -104,6 +104,12 @@ const MyComponent = ({ some, children }) => (
 	* stateToProps, dispatchToProps
 	* Provider
 		* connect store and Root component
+		
+# 4 (22.08)
+* [video](https://www.youtube.com/watch?v=DwmiN2DnYE4)
+* refactoring
+	* all actions and action creators -> actions folder
+	* reducers to their own folder
 * home task
 	* create tabs with react-redux
 	* make active tab stored into locaStorage, to stay active after page reload

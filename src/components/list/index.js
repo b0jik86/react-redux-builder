@@ -2,24 +2,20 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import {
+	itemRemove,
+	itemToggle
+} from 'actions';
 
-const stateToProps = ({ items, filter }) => {
-	return {
-		items,
-		filter
-	};
-};
+const stateToProps = ({ items, filter }) => ({
+	items,
+	filter
+});
 
 const dispatchToProps = (dispatch) => {
 	return {
-		itemRemove: (id) => dispatch({
-			type: 'ITEM_REMOVE',
-			id
-		}),
-		itemToggle: (id) => dispatch({
-			type: 'ITEM_TOGGLE',
-			id
-		})
+		itemRemove: (id) => dispatch(itemRemove(id)),
+		itemToggle: (id) => dispatch(itemToggle(id))
 	};
 };
 
